@@ -42,6 +42,7 @@ def create_jobs():
         return jsonify({'error': 'Bad request'})
     session = db_session.create_session()
     jobs = Jobs(
+        id=request.json['id'],
         job=request.json['job'],
         team_leader=request.json['team_leader'],
         work_size=request.json['work_size'],
@@ -50,6 +51,8 @@ def create_jobs():
         end_date = request.json['end_date'],
         is_finished=request.json['is_finished']
     )
+    if session.query(Jobs).filter(Jobs.id == jobs.id).first():
+        return jsonify({'error': 'Id already exists'})
     session.add(jobs)
     session.commit()
     return jsonify({'success': 'OK'})
