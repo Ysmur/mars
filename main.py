@@ -1,5 +1,7 @@
 from flask import Flask, render_template, redirect, request, make_response, session
 from flask_login import LoginManager, login_user, logout_user, login_required
+
+import jobs_api
 from loginform import LoginForm, JobsForm
 from data import db_session
 from data.users import User
@@ -17,6 +19,7 @@ def load_user(user_id):
 
 def main():
     db_session.global_init("db/mars_explorer.sqlite")
+    app.register_blueprint(jobs_api.blueprint)
     # user = User()
     # user.surname = "Scott"
     # user.name = "Ridley"
@@ -44,14 +47,14 @@ def main():
     # session.add(user)
     # session.commit()
     #
-    # jobs = Jobs()
-    # jobs.team_leader = 1
-    # jobs.job = 'deployment of residential modules 1 and 2'
-    # jobs.work_size = 15
-    # jobs.collaborators = '2, 3'
-    # session = db_session.create_session()
-    # session.add(jobs)
-    # session.commit()
+    jobs = Jobs()
+    jobs.team_leader = 2
+    jobs.job = 'deployment of residential modules 1 and 2'
+    jobs.work_size = 15
+    jobs.collaborators = '2, 3'
+    session = db_session.create_session()
+    session.add(jobs)
+    session.commit()
 
     app.run()
 
