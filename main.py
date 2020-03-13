@@ -1,13 +1,16 @@
 from flask import Flask, render_template, redirect, request, make_response, session, jsonify
 from flask_login import LoginManager, login_user, logout_user, login_required
+from flask_restful import Api
 
 import jobs_api
 from loginform import LoginForm, JobsForm
 from data import db_session
 from data.users import User
 from data.jobs import Jobs
+from data.users_resource import UsersResource, UsersListResource
 
 app = Flask(__name__)
+api = Api(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -17,13 +20,15 @@ def load_user(user_id):
     session = db_session.create_session()
     return session.query(User).get(user_id)
 
-@app.errorhandler(404)
-def not_found(error):
-    return make_response(jsonify({'error': 'Not jjjfound'}), 404)
 
 def main():
     db_session.global_init("db/mars_explorer.sqlite")
     app.register_blueprint(jobs_api.blueprint)
+    # для списка объектов
+    api.add_resource(UsersListResource, '/api/v2/users')
+
+    # для одного объекта
+    api.add_resource(UsersResource, '/api/v2/users/<int:user_id>')
     # user = User()
     # user.surname = "Scott"
     # user.name = "Ridley"
@@ -51,14 +56,14 @@ def main():
     # session.add(user)
     # session.commit()
     #
-    jobs = Jobs()
-    jobs.team_leader = 2
-    jobs.job = 'deployment of residential modules 1 and 2'
-    jobs.work_size = 15
-    jobs.collaborators = '2, 3'
-    session = db_session.create_session()
-    session.add(jobs)
-    session.commit()
+    # jobs = Jobs()
+    # jobs.team_leader = 2
+    # jobs.job = 'deployment of residential modules 1 and 2'
+    # jobs.work_size = 15
+    # jobs.collaborators = '2, 3'
+    # session = db_session.create_session()
+    # session.add(jobs)
+    # session.commit()
 
     app.run()
 
