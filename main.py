@@ -20,6 +20,9 @@ def load_user(user_id):
     session = db_session.create_session()
     return session.query(User).get(user_id)
 
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': f'{error} Not found'}), 404)
 
 def main():
     db_session.global_init("db/mars_explorer.sqlite")
