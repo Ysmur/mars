@@ -10,10 +10,14 @@ from requests import get, post, delete
 # print(get('http://localhost:5000/api/v2/users/q').json())
 
 # task 6
+print(post('http://localhost:5000/api/jobs',
+           json={'id': 17, 'job': 'inst an antenna', 'team_leader': 4, 'work_size': 23,
+                 'collaborators': '6, 3, 8', 'category': 3, 'is_finished': True}).json())
 
-print(post('http://localhost:5000/api/v2/users',
-           json={'name': 'installation of radiation protection'}).json())  # not full list of characters
-print(post('http://localhost:5000/api/v2/users').json())  # empty request
+
+# print(post('http://localhost:5000/api/v2/users',
+#            json={'name': 'installation of radiation protection'}).json())  # not full list of characters
+# print(post('http://localhost:5000/api/v2/users').json())  # empty request
 
 # print(post('http://localhost:5000/api/v2/users',
 #             json={'surname': 'Urna2',
