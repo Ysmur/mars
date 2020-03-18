@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, request, make_response, session, jsonify
 from flask_login import LoginManager, login_user, logout_user, login_required
 from flask_restful import Api
+import os
 
 import jobs_api
 from loginform import LoginForm, JobsForm
@@ -68,7 +69,7 @@ def main():
     # session.add(jobs)
     # session.commit()
 
-    app.run()
+    #app.run()
 
 @app.route('/')
 @app.route('/index')
@@ -112,4 +113,5 @@ def logout():
     return redirect("/")
 
 if __name__ == '__main__':
-    main()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
